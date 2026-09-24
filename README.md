@@ -54,7 +54,6 @@ The agent (`web/src/lib/agent.ts`) has one tool, `run_sql`. Several layers of de
 
 The agent's unit tests use a scripted fake client to cover: the normal flow, a rejected query that is never executed, self-correction after a database error, and the step limit.
 
-![Ask the data](docs/ask-the-data.png)
 
 ## Running it
 
