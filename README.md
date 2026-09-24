@@ -1,5 +1,7 @@
 # Visitor Insights
 
+**Live demo:** https://visitor-insights.vercel.app (data refreshed daily from live APIs)
+
 An end-to-end analytics platform for visitor attractions. It has three parts:
 
 1. **A data pipeline in Python and DuckDB.** It pulls data from three sources: daily weather from the Open-Meteo API, NZ public holidays from the Nager.Date API (including regional anniversary days), and a third-party ticketing vendor API that is paginated, flaky and messy. The data lands, is cleaned into a star schema and passes data-quality checks. It can then be published to **MotherDuck**.
