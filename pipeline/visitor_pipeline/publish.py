@@ -14,15 +14,12 @@ import duckdb
 
 log = logging.getLogger(__name__)
 
-PUBLISHED_TABLES = (
-    ("marts", "dim_venue"),
-    ("marts", "dim_date"),
-    ("marts", "fct_ticket_sales"),
-    ("marts", "fct_daily_venue"),
-    # run history + DQ results, so the deployed dashboard can show data freshness
-    ("ops", "pipeline_runs"),
-    ("ops", "dq_results"),
-)
+# Marts are replaced wholesale on every publish.
+MART_TABLES = ("dim_venue", "dim_date", "fct_ticket_sales", "fct_daily_venue")
+
+# Run history is appended, so MotherDuck keeps a record of every scheduled run
+# (each CI run starts from an empty local warehouse).
+OPS_TABLES = ("pipeline_runs", "dq_results")
 
 
 def publish_to_motherduck(con: duckdb.DuckDBPyConnection, database: str = "visitor_insights") -> None:
@@ -31,14 +28,37 @@ def publish_to_motherduck(con: duckdb.DuckDBPyConnection, database: str = "visit
     if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", database):
         raise ValueError(f"invalid MotherDuck database name: {database!r}")
 
-    local_db = con.execute("SELECT current_database()").fetchone()[0]
     con.execute("ATTACH IF NOT EXISTS 'md:'")
     con.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
-    for schema in sorted({s for s, _ in PUBLISHED_TABLES}):
-        con.execute(f"CREATE SCHEMA IF NOT EXISTS {database}.{schema}")
-    for schema, table in PUBLISHED_TABLES:
-        con.execute(
-            f'CREATE OR REPLACE TABLE {database}.{schema}.{table} AS '
-            f'SELECT * FROM "{local_db}".{schema}.{table}'
-        )
-        log.info("published %s.%s to md:%s", schema, table, database)
+    publish_into(con, database)
+
+
+def publish_into(con: duckdb.DuckDBPyConnection, database: str) -> None:
+    """Copy marts (replace) and run history (append) into an attached database."""
+    local_db = con.execute("SELECT current_database()").fetchone()[0]
+    con.execute(f"CREATE SCHEMA IF NOT EXISTS {database}.marts")
+    con.execute(f"CREATE SCHEMA IF NOT EXISTS {database}.ops")
+
+    # One transaction, so the dashboard never reads a half-published set of marts.
+    con.execute("BEGIN TRANSACTION")
+    try:
+        for table in MART_TABLES:
+            con.execute(
+                f"CREATE OR REPLACE TABLE {database}.marts.{table} AS "
+                f'SELECT * FROM "{local_db}".marts.{table}'
+            )
+        for table in OPS_TABLES:
+            con.execute(
+                f"CREATE TABLE IF NOT EXISTS {database}.ops.{table} AS "
+                f'SELECT * FROM "{local_db}".ops.{table} LIMIT 0'
+            )
+            con.execute(
+                f"INSERT INTO {database}.ops.{table} "
+                f'SELECT * FROM "{local_db}".ops.{table} '
+                f"WHERE run_id NOT IN (SELECT run_id FROM {database}.ops.{table})"
+            )
+        con.execute("COMMIT")
+    except Exception:
+        con.execute("ROLLBACK")
+        raise
+    log.info("published marts + run history to md:%s", database)

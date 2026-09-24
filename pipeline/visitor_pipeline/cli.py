@@ -2,6 +2,7 @@
 
     visitor-pipeline run --start 2025-01-01 --end 2025-12-31 --mode offline
     visitor-pipeline run --mode live --publish        # real APIs + push to MotherDuck
+    visitor-pipeline run --mode live --rolling-days 365 --publish   # scheduled refresh
 """
 
 from __future__ import annotations
@@ -9,11 +10,13 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
-from datetime import date
+from datetime import date, timedelta
 
 from . import pipeline
 from .config import warehouse_path
 from .quality import DataQualityError
+
+ARCHIVE_LAG_DAYS = 3  # Open-Meteo's historical archive trails today by ~2 days
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -27,6 +30,11 @@ def main(argv: list[str] | None = None) -> int:
         "--mode", choices=("offline", "live"), default="offline",
         help="live = Open-Meteo + Nager.Date APIs; offline = synthetic weather + bundled holidays",
     )
+    run.add_argument(
+        "--rolling-days", type=int, default=None,
+        help="ignore --start/--end and load the last N days (ending a few days ago, "
+             "because the weather archive lags behind real time)",
+    )
     run.add_argument("--db", default=None, help="DuckDB file (default: $DUCKDB_PATH or data/)")
     run.add_argument("--publish", action="store_true", help="copy marts to MotherDuck")
     run.add_argument("-v", "--verbose", action="store_true")
@@ -37,9 +45,14 @@ def main(argv: list[str] | None = None) -> int:
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     )
 
+    start, end = args.start, args.end
+    if args.rolling_days:
+        end = date.today() - timedelta(days=ARCHIVE_LAG_DAYS)
+        start = end - timedelta(days=args.rolling_days - 1)
+
     try:
         summary = pipeline.run(
-            args.start, args.end, mode=args.mode, db_path=args.db or warehouse_path(),
+            start, end, mode=args.mode, db_path=args.db or warehouse_path(),
             publish=args.publish,
         )
     except DataQualityError as exc:

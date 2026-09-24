@@ -1,0 +1,47 @@
+name: Daily data refresh
+
+# Pulls the last 12 months of weather, holidays and ticket sales, rebuilds the
+# warehouse, runs the data-quality checks and publishes to MotherDuck.
+# A failed check stops the publish, so the live dashboard keeps its last good data.
+on:
+  schedule:
+    - cron: "0 18 * * *" # 06:00 NZST / 07:00 NZDT
+  workflow_dispatch:
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: pipeline
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e .
+      - name: Check secrets
+        env:
+          MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
+        run: |
+          if [ -z "$MOTHERDUCK_TOKEN" ]; then
+            echo "::error::Add a MOTHERDUCK_TOKEN repository secret (Settings → Secrets and variables → Actions)."
+            exit 1
+          fi
+      - name: Extract, load, transform, check, publish
+        env:
+          MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
+        run: visitor-pipeline run --mode live --rolling-days 365 --publish -v
+      - name: Keep the raw extracts for auditing
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: landing-${{ github.run_id }}
+          path: pipeline/data/landing
+          retention-days: 14

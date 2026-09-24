@@ -15,7 +15,12 @@ export type Param = string | number | boolean;
 function target(): { location: string; options: Record<string, string> } {
   if (process.env.MOTHERDUCK_TOKEN) {
     const db = process.env.MOTHERDUCK_DATABASE ?? "visitor_insights";
-    return { location: `md:${db}`, options: {} };
+    // Serverless functions only have a writable /tmp, which DuckDB needs for its
+    // home directory and the MotherDuck extension download.
+    return {
+      location: `md:${db}`,
+      options: { home_directory: "/tmp", extension_directory: "/tmp/duckdb_extensions" },
+    };
   }
   const file =
     process.env.DUCKDB_PATH ||

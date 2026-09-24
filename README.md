@@ -64,7 +64,7 @@ The agent's unit tests use a scripted fake client to cover: the normal flow, a r
 cd pipeline
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
-pytest                                   # 20 tests
+pytest                                   # 21 tests
 visitor-pipeline run --mode offline      # or: --mode live  (real weather + holidays)
 #   -> pipeline/data/warehouse.duckdb, with each DQ check printed
 
@@ -75,6 +75,10 @@ npm install
 npm run dev                              # http://localhost:3000
 npm test                                 # SQL guard + agent tests
 ```
+
+### Scheduled refresh
+
+`.github/workflows/refresh.yml` runs every morning (06:00 NZ time). It loads the last 12 months from the live APIs, rebuilds the warehouse, runs the data-quality checks and publishes to MotherDuck. If any check fails, nothing is published, so the live dashboard keeps its last good data. MotherDuck keeps a history of every run in `ops.*`. The raw extracts from each run are kept as a build artifact for 14 days.
 
 ### Publishing to MotherDuck
 
