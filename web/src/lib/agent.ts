@@ -88,7 +88,8 @@ export async function askAgent(
   opts: { client?: Anthropic; model?: string; runQuery?: RunQuery } = {},
 ): Promise<AgentResult> {
   const client = opts.client ?? new Anthropic();
-  const model = opts.model ?? process.env.ANTHROPIC_MODEL ?? "claude-sonnet-5";
+  const model = opts.model ?? process.env.ANTHROPIC_MODEL;
+  if (!model) throw new Error("ANTHROPIC_MODEL is not configured");
   const runQuery = opts.runQuery ?? queryWithColumns;
 
   const messages: Anthropic.MessageParam[] = [{ role: "user", content: question }];

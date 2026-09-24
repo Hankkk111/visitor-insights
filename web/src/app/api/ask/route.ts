@@ -17,9 +17,9 @@ function rateLimited(ip: string): boolean {
 }
 
 export async function POST(request: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!process.env.ANTHROPIC_API_KEY || !process.env.ANTHROPIC_MODEL) {
     return NextResponse.json(
-      { error: "The question box is switched off: ANTHROPIC_API_KEY is not configured." },
+      { error: "The question box is switched off: ANTHROPIC_API_KEY / ANTHROPIC_MODEL are not configured." },
       { status: 503 },
     );
   }

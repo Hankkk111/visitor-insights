@@ -4,7 +4,7 @@ An end-to-end analytics platform for visitor attractions. It has three parts:
 
 1. **A data pipeline in Python and DuckDB.** It pulls data from three sources: daily weather from the Open-Meteo API, NZ public holidays from the Nager.Date API (including regional anniversary days), and a third-party ticketing vendor API that is paginated, flaky and messy. The data lands, is cleaned into a star schema and passes data-quality checks. It can then be published to **MotherDuck**.
 2. **A dashboard in Next.js, TypeScript and Tailwind CSS.** It shows visitor trends, how weather affects demand, and how much public holidays lift it, with a venue filter.
-3. **"Ask the data", a natural-language SQL analyst.** An LLM agent (Anthropic API, tool use) writes SQL, runs it through a guard against the read-only warehouse, reads the results or errors, corrects itself if needed, and answers in plain English. The SQL it ran is shown next to the answer.
+3. **"Ask the data", a natural-language SQL analyst.** An agent writes SQL, runs it through a guard against the read-only warehouse, reads the results or errors, corrects itself if needed, and answers in plain English. The SQL it ran is shown next to the answer.
 
 ![Dashboard](docs/dashboard.png)
 
@@ -15,7 +15,7 @@ An end-to-end analytics platform for visitor attractions. It has three parts:
 ```
  Open-Meteo API ─┐
  Nager.Date API ─┼─► extract ─► landing/*.ndjson ─► raw.* ─► staging.* ─► marts.* ─► DQ checks ─┬─► dashboard (Next.js)
- Ticketing API  ─┘   (retries,    (audit copy of     (idempotent  (typed, de-  (star      (fail the run,  ├─► SQL agent (LLM)
+ Ticketing API  ─┘   (retries,    (audit copy of     (idempotent  (typed, de-  (star      (fail the run,  ├─► SQL agent
                       pagination)  every extract)     reloads)     duplicated)  schema)    roll back)      └─► MotherDuck (--publish)
 ```
 
@@ -46,7 +46,7 @@ An end-to-end analytics platform for visitor attractions. It has three parts:
 
 The agent (`web/src/lib/agent.ts`) has one tool, `run_sql`. Several layers of defence stop it from doing damage:
 
-1. **The SQL guard** (`sqlGuard.ts`). It allows a single `SELECT`/`WITH` statement only. It blocks DDL/DML, `ATTACH`/`COPY`/`INSTALL`/`PRAGMA`, file-reading functions (`read_csv`, `FROM 'file'`, `glob`), `getenv`, and every schema except `marts`. Keywords inside string literals can't trick it. Rejected queries go back to the model with the reason, so it can fix them.
+1. **The SQL guard** (`sqlGuard.ts`). It allows a single `SELECT`/`WITH` statement only. It blocks DDL/DML, `ATTACH`/`COPY`/`INSTALL`/`PRAGMA`, file-reading functions (`read_csv`, `FROM 'file'`, `glob`), `getenv`, and every schema except `marts`. Keywords inside string literals can't trick it. Rejected queries go back to the agent with the reason, so it can fix them.
 2. **The database connection** is opened `READ_ONLY`, with `enable_external_access=false` and `lock_configuration=true`.
 3. **Row limit.** Every query is wrapped in a `LIMIT` of 200 rows.
 4. **Step limit.** The agent can make at most 6 tool calls. After that it's forced to answer.
@@ -107,4 +107,4 @@ web/
 
 ## Tech
 
-Python · DuckDB · MotherDuck · SQL · REST API integration · pytest · ruff · Next.js (App Router) · React · TypeScript · Tailwind CSS · Anthropic Claude (tool use) · Vitest · GitHub Actions
+Python · DuckDB · MotherDuck · SQL · REST API integration · pytest · ruff · Next.js (App Router) · React · TypeScript · Tailwind CSS · Vitest · GitHub Actions

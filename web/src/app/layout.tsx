@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Visitor Insights",
-  description: "Visitor, weather and holiday analytics for NZ attractions, with an AI SQL analyst.",
+  description: "Visitor, weather and holiday analytics for NZ attractions, with a natural-language SQL analyst.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

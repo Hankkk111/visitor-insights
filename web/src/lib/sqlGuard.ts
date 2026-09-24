@@ -1,5 +1,5 @@
 /**
- * Guardrails for SQL written by the LLM agent.
+ * Guardrails for SQL written by the analyst agent.
  *
  * This is one layer of several (see README "Security"): the database is also
  * opened READ_ONLY with external access disabled, and results are row-capped.

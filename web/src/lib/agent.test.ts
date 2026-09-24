@@ -4,7 +4,7 @@ import { askAgent, MAX_TOOL_CALLS } from "./agent";
 
 type Reply = { stop_reason: string; content: unknown[] };
 
-/** A scripted stand-in for the Anthropic client that records what it was sent. */
+/** A scripted stand-in for the API client that records what it was sent. */
 function fakeClient(replies: Reply[]) {
   const sent: { messages: Anthropic.MessageParam[]; tool_choice: unknown }[] = [];
   let i = 0;
@@ -34,6 +34,7 @@ describe("askAgent", () => {
     const executed: string[] = [];
     const result = await askAgent("How many venues?", {
       client,
+      model: "test-model",
       runQuery: async (sql) => {
         executed.push(sql);
         return { columns: ["venue_id"], rows: [{ venue_id: "AKL-AQ" }, { venue_id: "ZQN-AP" }] };
@@ -59,6 +60,7 @@ describe("askAgent", () => {
     let ran = false;
     const result = await askAgent("Delete everything", {
       client,
+      model: "test-model",
       runQuery: async () => {
         ran = true;
         return { columns: [], rows: [] };
@@ -78,6 +80,7 @@ describe("askAgent", () => {
     ]);
     const result = await askAgent("q", {
       client,
+      model: "test-model",
       runQuery: async (sql) => {
         if (sql.includes("nope")) throw new Error('Binder Error: column "nope" not found');
         return { columns: ["venue_id"], rows: [{ venue_id: "AKL-AQ" }] };
@@ -93,6 +96,7 @@ describe("askAgent", () => {
     ]);
     const result = await askAgent("loop forever", {
       client,
+      model: "test-model",
       runQuery: async () => ({ columns: ["x"], rows: [{ x: 1 }] }),
     });
     expect(result.steps.length).toBe(MAX_TOOL_CALLS);
