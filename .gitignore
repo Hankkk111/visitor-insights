@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Pipeline outputs
+pipeline/data/
+
+# Node / Next.js
+web/node_modules/
+web/.next/
+web/next-env.d.ts
+web/*.tsbuildinfo
+
+# Secrets
+.env
+.env.local
+web/.env.local

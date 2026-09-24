@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pipeline:
+    name: Pipeline (Python + DuckDB)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: ruff check .
+      - run: pytest -q
+      - name: Build the warehouse (offline mode, deterministic)
+        run: visitor-pipeline run --mode offline
+      - uses: actions/upload-artifact@v4
+        with:
+          name: warehouse
+          path: pipeline/data/warehouse.duckdb
+          retention-days: 7
+
+  web:
+    name: Web (Next.js + TypeScript)
+    runs-on: ubuntu-latest
+    needs: pipeline
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: actions/download-artifact@v4
+        with:
+          name: warehouse
+          path: pipeline/data
+      - run: npm ci
+      - run: npm test
+      - name: Build (renders the dashboard against the warehouse artifact)
+        run: npm run build
+        env:
+          DUCKDB_PATH: ${{ github.workspace }}/pipeline/data/warehouse.duckdb
+      - run: npm run typecheck

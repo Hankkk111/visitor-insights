@@ -1,0 +1,209 @@
+[
+  {
+    "date": "2025-01-01",
+    "localName": "New Year's Day",
+    "name": "New Year's Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-01-02",
+    "localName": "Day after New Year's Day",
+    "name": "Day after New Year's Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-01-20",
+    "localName": "Wellington Anniversary Day",
+    "name": "Wellington Anniversary Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": false,
+    "counties": [
+      "NZ-WGN"
+    ],
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-01-27",
+    "localName": "Auckland Anniversary Day",
+    "name": "Auckland Anniversary Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": false,
+    "counties": [
+      "NZ-AUK",
+      "NZ-NTL",
+      "NZ-WKO",
+      "NZ-BOP",
+      "NZ-GIS"
+    ],
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-02-06",
+    "localName": "Waitangi Day",
+    "name": "Waitangi Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-03-24",
+    "localName": "Otago Anniversary Day",
+    "name": "Otago Anniversary Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": false,
+    "counties": [
+      "NZ-OTA"
+    ],
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-04-18",
+    "localName": "Good Friday",
+    "name": "Good Friday",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-04-21",
+    "localName": "Easter Monday",
+    "name": "Easter Monday",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-04-25",
+    "localName": "ANZAC Day",
+    "name": "ANZAC Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-06-02",
+    "localName": "King's Birthday",
+    "name": "King's Birthday",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-06-20",
+    "localName": "Matariki",
+    "name": "Matariki",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-10-27",
+    "localName": "Labour Day",
+    "name": "Labour Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-11-14",
+    "localName": "Show Day",
+    "name": "Canterbury Anniversary Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": false,
+    "counties": [
+      "NZ-CAN"
+    ],
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-12-25",
+    "localName": "Christmas Day",
+    "name": "Christmas Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2025-12-26",
+    "localName": "Boxing Day",
+    "name": "Boxing Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  }
+]

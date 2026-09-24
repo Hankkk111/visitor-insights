@@ -1,0 +1,209 @@
+[
+  {
+    "date": "2026-01-01",
+    "localName": "New Year's Day",
+    "name": "New Year's Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-01-02",
+    "localName": "Day after New Year's Day",
+    "name": "Day after New Year's Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-01-19",
+    "localName": "Wellington Anniversary Day",
+    "name": "Wellington Anniversary Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": false,
+    "counties": [
+      "NZ-WGN"
+    ],
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-01-26",
+    "localName": "Auckland Anniversary Day",
+    "name": "Auckland Anniversary Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": false,
+    "counties": [
+      "NZ-AUK",
+      "NZ-NTL",
+      "NZ-WKO",
+      "NZ-BOP",
+      "NZ-GIS"
+    ],
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-02-06",
+    "localName": "Waitangi Day",
+    "name": "Waitangi Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-03-23",
+    "localName": "Otago Anniversary Day",
+    "name": "Otago Anniversary Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": false,
+    "counties": [
+      "NZ-OTA"
+    ],
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-04-03",
+    "localName": "Good Friday",
+    "name": "Good Friday",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-04-06",
+    "localName": "Easter Monday",
+    "name": "Easter Monday",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-04-27",
+    "localName": "ANZAC Day (observed)",
+    "name": "ANZAC Day (observed)",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-06-01",
+    "localName": "King's Birthday",
+    "name": "King's Birthday",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-07-10",
+    "localName": "Matariki",
+    "name": "Matariki",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-10-26",
+    "localName": "Labour Day",
+    "name": "Labour Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-11-13",
+    "localName": "Show Day",
+    "name": "Canterbury Anniversary Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": false,
+    "counties": [
+      "NZ-CAN"
+    ],
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-12-25",
+    "localName": "Christmas Day",
+    "name": "Christmas Day",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  },
+  {
+    "date": "2026-12-28",
+    "localName": "Boxing Day (observed)",
+    "name": "Boxing Day (observed)",
+    "countryCode": "NZ",
+    "fixed": false,
+    "global": true,
+    "counties": null,
+    "launchYear": null,
+    "types": [
+      "Public"
+    ]
+  }
+]
