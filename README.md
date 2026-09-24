@@ -4,7 +4,7 @@ An end-to-end analytics platform for visitor attractions. It has three parts:
 
 1. **A data pipeline in Python and DuckDB.** It pulls data from three sources: daily weather from the Open-Meteo API, NZ public holidays from the Nager.Date API (including regional anniversary days), and a third-party ticketing vendor API that is paginated, flaky and messy. The data lands, is cleaned into a star schema and passes data-quality checks. It can then be published to **MotherDuck**.
 2. **A dashboard in Next.js, TypeScript and Tailwind CSS.** It shows visitor trends, how weather affects demand, and how much public holidays lift it, with a venue filter.
-3. **"Ask the data", an agentic AI analyst.** Claude writes SQL, runs it through a guard against the read-only warehouse, reads the results or errors, corrects itself if needed, and answers in plain English. The SQL it ran is shown next to the answer.
+3. **"Ask the data", a natural-language SQL analyst.** An LLM agent (Anthropic API, tool use) writes SQL, runs it through a guard against the read-only warehouse, reads the results or errors, corrects itself if needed, and answers in plain English. The SQL it ran is shown next to the answer.
 
 ![Dashboard](docs/dashboard.png)
 
@@ -15,7 +15,7 @@ An end-to-end analytics platform for visitor attractions. It has three parts:
 ```
  Open-Meteo API ─┐
  Nager.Date API ─┼─► extract ─► landing/*.ndjson ─► raw.* ─► staging.* ─► marts.* ─► DQ checks ─┬─► dashboard (Next.js)
- Ticketing API  ─┘   (retries,    (audit copy of     (idempotent  (typed, de-  (star      (fail the run,  ├─► Claude SQL agent
+ Ticketing API  ─┘   (retries,    (audit copy of     (idempotent  (typed, de-  (star      (fail the run,  ├─► SQL agent (LLM)
                       pagination)  every extract)     reloads)     duplicated)  schema)    roll back)      └─► MotherDuck (--publish)
 ```
 

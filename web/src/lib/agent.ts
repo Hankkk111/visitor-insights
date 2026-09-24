@@ -5,7 +5,7 @@ import { guardSql, MAX_ROWS, withRowLimit } from "./sqlGuard";
 /**
  * "Ask the data" agent.
  *
- * Claude gets one tool, `run_sql`, and a description of the marts. It plans a
+ * The model gets one tool, `run_sql`, and a description of the marts. It plans a
  * query, runs it, reads the result (or the error), and iterates until it can
  * answer in plain English. Every query passes through the SQL guard first and
  * the loop is capped, so a confused model can't spin forever or touch anything
