@@ -1,5 +1,5 @@
 import path from "node:path";
-import { DuckDBInstance } from "@duckdb/node-api";
+import type { DuckDBInstance } from "@duckdb/node-api";
 
 /**
  * Server-only DuckDB access.
@@ -40,10 +40,13 @@ let instance: Promise<DuckDBInstance> | null = null;
 function getInstance(): Promise<DuckDBInstance> {
   if (!instance) {
     const { location, options } = target();
-    instance = DuckDBInstance.fromCache(location, options).catch((err) => {
-      instance = null; // allow a retry once the file exists
-      throw err;
-    });
+    // Loaded lazily so a missing native binding surfaces as a catchable error.
+    instance = import("@duckdb/node-api")
+      .then(({ DuckDBInstance }) => DuckDBInstance.fromCache(location, options))
+      .catch((err) => {
+        instance = null; // allow a retry once the file exists
+        throw err;
+      });
   }
   return instance;
 }
